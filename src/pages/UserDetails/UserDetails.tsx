@@ -31,7 +31,7 @@ interface UserInfos {
 
 const UserDetails: React.FC = () => {
   const userParam: Params<string> | undefined = useParams();
-  const navigate: NavigateFunction = useNavigate();
+  // const navigate: NavigateFunction = useNavigate();
   const [userInfo, setUserInfo] = useState<UserInfos>({
     email: "",
     name: "",

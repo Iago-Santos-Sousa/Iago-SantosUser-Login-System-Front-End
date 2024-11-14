@@ -160,9 +160,11 @@ const LoginPage: React.FC = () => {
             </button>
           </div>
 
-          <div className="rounded-full text-base py-3 text-center text-spanTwoColor hover:bg-purple-500 hover:text-white hover:cursor-pointer">
-            <Link to={"/create-user"}>SIGN UP</Link>
-          </div>
+          <Link to={"/create-user"}>
+            <div className="rounded-full text-base w-full py-3 text-center text-spanTwoColor hover:bg-purple-500 hover:text-white hover:cursor-pointer">
+              <span> SIGN UP</span>
+            </div>
+          </Link>
         </form>
       </div>
     </div>

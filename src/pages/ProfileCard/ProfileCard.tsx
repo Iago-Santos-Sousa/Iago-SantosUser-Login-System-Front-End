@@ -1,37 +1,37 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { Link } from "react-router-dom";
-import userImg from "../assets/example-user.jpeg";
+// import userImg from "../assets/example-user.jpeg";
 import userAvatar from "../../assets/user-avatar.svg";
 import { useLogin } from "../../context/AppProvider";
-import { userApi } from "../../integrations/user";
-import { blobToBase64, base64ToBlob } from "../../utils/otherUtils";
+// import { userApi } from "../../integrations/user";
+// import { blobToBase64, base64ToBlob } from "../../utils/otherUtils";
 
-interface UserInfos {
-  email: string;
-  name: string;
-  userId: number;
-}
+// interface UserInfos {
+//   email: string;
+//   name: string;
+//   userId: number;
+// }
 
 const ProfileCard: React.FC = () => {
-  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
-  const [image64, setImage64] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState<UserInfos>({
-    email: "",
-    name: "",
-    userId: 0,
-  });
+  // const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+  // const [image64, setImage64] = useState<string | null>(null);
+  // const [userInfo, setUserInfo] = useState<UserInfos>({
+  //   email: "",
+  //   name: "",
+  //   userId: 0,
+  // });
 
   const { user } = useLogin();
 
-  const handleUpload = async (blob: Blob) => {
-    const photo = await blobToBase64(blob);
-    setImageBlob(blob);
-    setImage64(photo);
-  };
+  // const handleUpload = async (blob: Blob) => {
+  //   const photo = await blobToBase64(blob);
+  //   setImageBlob(blob);
+  //   setImage64(photo);
+  // };
 
-  const clearImage = () => {
-    setImageBlob(null);
-  };
+  // const clearImage = () => {
+  //   setImageBlob(null);
+  // };
 
   // console.log(imageBlob);
   // console.log(image64);
@@ -69,8 +69,6 @@ const ProfileCard: React.FC = () => {
           </button>
         </Link>
       </div>
-
-      {userInfo && userInfo.name && <p>{user.name}</p>}
     </div>
   );
 };

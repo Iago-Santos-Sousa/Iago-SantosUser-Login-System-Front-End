@@ -53,6 +53,4 @@ export const userApi = () => ({
 
     return response.data;
   },
-
-  uploadImage: async () => {},
 });

@@ -240,7 +240,7 @@ const CreateUser: React.FC = () => {
             )}
           </div>
 
-          <div className="text-center text-white">
+          <div className="text-center text-white w-auto h-auto">
             <button
               className="bg-purple-500 text-base w-full rounded-full py-3 opacity-70 hover:opacity-100"
               type="submit"
