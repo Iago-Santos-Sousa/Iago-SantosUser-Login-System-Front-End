@@ -8,6 +8,11 @@ import backIcon from "../../assets/back-icon.svg";
 import { userApi } from "../../integrations/user";
 import { useForm } from "react-hook-form";
 import { AxiosError } from "axios";
+import EmailErrorMessageCard from "../../components/EmailErrorMessageCard";
+import ResetPasswordSuccessCard from "../../components/ResetPasswordSuccessCard";
+import LoadingDots from "../../components/LoadingDots";
+const sleep = async (ms: number) =>
+  new Promise<void>((resolve, reject) => setTimeout(resolve, ms));
 
 type Inputs = {
   password: string;
@@ -15,9 +20,12 @@ type Inputs = {
 };
 
 const ResetPassword: React.FC = () => {
-  const [loginError, setLoginError] = useState<string>("");
+  const [resetPasswordError, setResetPasswordError] = useState<string>("");
+  const [resetPasswordSuccess, setResetPasswordSuccess] =
+    useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
   const [confirmShowPassword, setConfirmShowPassword] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const {
     register,
@@ -28,6 +36,10 @@ const ResetPassword: React.FC = () => {
 
   const handleChangePassword = async (data: Inputs): Promise<void> => {
     try {
+      setResetPasswordSuccess(false);
+      setResetPasswordError("");
+      setLoading(true);
+      await sleep(3000);
       const path: string = window.location.pathname;
       const parts: string[] = path.split("/");
       const resetPasswordToken: string = parts[parts.length - 1];
@@ -51,8 +63,23 @@ const ResetPassword: React.FC = () => {
         resetPasswordToken,
         data.password,
       );
+      setResetPasswordSuccess(true);
     } catch (error: unknown | AxiosError) {
       console.log(error);
+      if (error instanceof AxiosError) {
+        if (
+          error?.response?.status === 404 ||
+          error?.response?.status === 410
+        ) {
+          setResetPasswordError("Invalid or expired token!");
+        } else {
+          setResetPasswordError("Unable to change password!");
+        }
+      } else {
+        setResetPasswordError("Unable to change password!");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -167,10 +194,16 @@ const ResetPassword: React.FC = () => {
               className="bg-purple-500 text-base w-full rounded-full py-3 opacity-70 hover:opacity-100"
               type="submit"
             >
-              Mude a senha
+              {loading ? <LoadingDots /> : "Change password"}
             </button>
           </div>
         </form>
+
+        {resetPasswordSuccess && <ResetPasswordSuccessCard />}
+
+        {resetPasswordError && (
+          <EmailErrorMessageCard message={resetPasswordError} />
+        )}
       </div>
     </div>
   );

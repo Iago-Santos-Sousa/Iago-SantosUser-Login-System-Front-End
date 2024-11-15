@@ -5,6 +5,9 @@ import backIcon from "../../assets/back-icon.svg";
 import emailIcon from "../../assets/email-icon.svg";
 import { useForm } from "react-hook-form";
 import { userApi } from "../../integrations/user";
+import EmailErrorMessageCard from "../../components/EmailErrorMessageCard";
+import EmailSuccessCard from "../../components/EmailSuccessCard";
+import LoadingDots from "../../components/LoadingDots";
 
 type Inputs = {
   email: string;
@@ -18,13 +21,24 @@ const ForgotPassword: React.FC = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
+  const [errorEmail, setErrorEmail] = useState<string>("");
+  const [successEmail, setSuccessEmail] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleResetPassword = async (data: Inputs) => {
     try {
+      setSuccessEmail(false);
+      setErrorEmail("");
+      setLoading(true);
       data.email = data.email ? data.email.trim() : "";
       const result = await userApi().forgotPassword(data.email);
       console.log(result);
-    } catch (error) {
+      setSuccessEmail(true);
+    } catch (error: unknown) {
       console.log(error);
+      setErrorEmail("Unable to send email!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,13 +93,16 @@ const ForgotPassword: React.FC = () => {
 
           <div className="text-center text-white">
             <button
-              className="bg-purple-500 text-base w-full rounded-full py-3 opacity-70 hover:opacity-100"
+              className="bg-purple-500 text-base w-full rounded-full py-3 opacity-70 hover:opacity-100 min-h-12"
               type="submit"
             >
-              Send E-mail
+              {loading ? <LoadingDots /> : "Send E-mail"}
             </button>
           </div>
         </form>
+
+        {successEmail && <EmailSuccessCard />}
+        {errorEmail && <EmailErrorMessageCard message={errorEmail} />}
       </div>
     </div>
   );

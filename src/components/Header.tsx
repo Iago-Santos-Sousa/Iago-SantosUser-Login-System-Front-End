@@ -1,6 +1,7 @@
 import { useLogin } from "../context/AppProvider";
 import userLogo from "../assets/user-check-icon.svg";
 import { useNavigate, NavigateFunction, Link } from "react-router-dom";
+import { loginAPi } from "../integrations/auth";
 
 const Header: React.FC = () => {
   const signOut = useLogin().signOut;
@@ -26,8 +27,12 @@ const Header: React.FC = () => {
             <li className="">
               <button
                 onClick={() => {
-                  signOut();
-                  navigate("/", { replace: true });
+                  loginAPi()
+                    .logOut()
+                    .then((response) => {
+                      signOut();
+                      navigate("/", { replace: true });
+                    });
                 }}
               >
                 Log out

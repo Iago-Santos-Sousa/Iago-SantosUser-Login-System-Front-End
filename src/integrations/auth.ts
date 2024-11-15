@@ -5,6 +5,11 @@ type UserInfos = {
   password: string;
 };
 
+type ResponseData = {
+  status: string;
+  message: string;
+};
+
 interface UserResponse {
   accessToken: string;
   refreshToken: string;
@@ -22,6 +27,11 @@ export const loginAPi = () => ({
       password,
     });
 
+    return response.data;
+  },
+
+  logOut: async (): Promise<ResponseData> => {
+    const response = await api.post<ResponseData>("/log-out");
     return response.data;
   },
 });

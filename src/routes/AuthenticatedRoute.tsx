@@ -2,6 +2,7 @@ import { useEffect, PropsWithChildren } from "react";
 import { useLogin } from "../context/AppProvider";
 import { useNavigate, NavigateFunction } from "react-router-dom";
 import PageLoading from "../components/PageLoading";
+import { loginAPi } from "../integrations/auth";
 
 const AuthenticatedRoute = ({ children }: PropsWithChildren) => {
   const accessToken = useLogin().accessToken;
@@ -15,8 +16,12 @@ const AuthenticatedRoute = ({ children }: PropsWithChildren) => {
       sessionStorage.getItem("user.refreshToken");
 
     if (!sessionToken || !sessionUser || !sessionRefreshToken) {
-      sessionStorage.clear();
-      return navigate("/", { replace: true });
+      loginAPi()
+        .logOut()
+        .then((response) => {
+          sessionStorage.clear();
+          return navigate("/", { replace: true });
+        });
     }
   }, []);
 
